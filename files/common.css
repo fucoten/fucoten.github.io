@@ -1,0 +1,173 @@
+/*  */
+body{
+	background-color:#ddddff;
+	min-height:100%;
+	width:100%;
+	padding:0px;
+	margin:0px
+}
+#header{
+	background:#dd99ff;
+}
+#main{
+	display:block;
+	height:100%;
+}
+	#articles{
+		float:left;
+		display:block;
+		min-height:100%;
+		width:75%;
+	}
+		.article-buttons div{
+			display:inline;
+		}
+	#sidebar{
+		text-align:left;
+		display:block;
+		width:25%;
+		float:right;
+		height:100%;
+	}
+		.sidebar-item{
+			overflow:hidden;
+		}
+/*  */
+#blog-title{
+	background-image:url(/files/common_title_bg.png);
+	background-size:cover;
+	font-family:"Raleway",sans-serif;
+	background-color:#ccffff;
+}
+.sidebar-item{
+	background-color:#aaffff;
+	padding:2px;
+	margin:6px;
+}
+	.sidebar-item-title{
+		border-left-style:solid;
+		border-left-width:4px;
+		border-left-color:#cc00ff;
+		padding:2px;
+	}
+	.sidebar-item .collapse-parent:hover .collapse-child{
+		display:block;
+	}
+	.sidebar-item .collapse-parent       .collapse-child{
+		display:none;
+	}
+	.sidebar-item a[href*="blogmura.com"]{
+		text-decoration:none;
+	}
+/*  */
+#blog-title{
+	height:200px;
+	vertical-align:middle;
+	padding:26px;
+}
+	#blog-title h1 a{
+		width:100%;
+		padding-left:48px;
+		border-left-style:solid;
+		border-left-width:34px;
+		border-left-color:#3f00ff;
+		background-color:#ffff99;
+		color:#3f00ff;
+	}
+#articles{
+	background-color:#ccffcc;
+}
+	.article-container{
+		margin-bottom:8px;
+	}
+		.article-header{
+			margin-left:12px;
+			margin-bottom:12px;
+			padding-left:12px;
+			border-left-style:solid;
+			border-left-width:4px;
+			border-left-color:#88aaff;
+			border-bottom-width:1px;
+			border-bottom-color:#888888;
+		}
+			.article-title{
+				margin-bottom:3px;
+				border-bottom-style:solid;
+				border-bottom-width:2px;
+				border-bottom-color:#bbbbff;
+			}
+				.article-title a{
+					color:#4444bb;
+					padding-left:9px;
+					border-color:#4444bb;
+					border-left-style:solid;
+					border-left-width:18px;
+					border-top-style:none;
+					border-right-style:none;
+					border-bottom-width:1px;
+					border-bottom-style:double;
+				}
+			.article-tags .tag{
+				font-size:small;
+			}
+			.article-butons div{
+				display:inline;
+			}
+	.article-content{
+		padding-left:26px;
+		color:222244;
+	}
+		.article-content code{
+			tab-size:4;
+			font-size:9pt;
+			border-left-style:solid;
+			border-left-width:1pt;
+			display:block;
+			background-color:#000000;
+			opacity:80%;
+			color:#ffffff;
+		}
+			.article-content code .sh-ps1{
+				color:#3355ff;
+				-moz-user-select:none;
+			}
+		.article-content table:nth-child(even){
+			background-color:rgba(80%,80%,80%,70%);
+		}
+		.article-content table:nth-child(odd){
+			background-color:rgba(90%,90%,90%,70%);
+		}
+	.article-footer{
+		border-top-style:solid;
+		border-width:2px;
+		border-color:#aaaaff;
+	}
+		.article-datetime{
+			text-align:right;
+			display:block;
+			font-size:xx-small;
+		}
+		.article-relatedposts{
+			margin-left:12px;
+			border-left-style:solid;
+			border-left-width:12px;
+			border-left-color:#aaaaff;
+		}
+#footer{
+	color:#555555;
+	font-size:xx-small;
+}
+#hatena-bookmark-widget0{
+	display:block;
+	width:100%;
+}
+	#hatena-bookmark-widget0 .hatena-bookmark-widget-body ul{
+		height:160px;
+		overflow:scroll;
+	}
+		#hatena-bookmark-widget0 .hatena-bookmark-widget-body li:empty{
+			display:none;
+		}
+.sidebar-item > div{
+	width:100%;
+}

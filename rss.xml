@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+	<title>Pumpkin!</title>
+	<link>http://fucoten.github.io/</link>
+	<description>Cake! Cake! Round cake!</description>
+	<dc:creator></dc:creator>
+<item>
+	<title>なぜかlvm2をインストールできない問題</title>
+	<link>http://fucoten.github.io/articles/1441193659.html</link>
+	<description><![CDATA[<code>
+<br/><span class="sh-ps1">&nbsp;$&nbsp;</span>sudo apt-get install lvm2
+<br/></code>
+<br/>これが以下のようなエラーが
+<br/><code>
+<br/>Preparing to unpack .../lvm2_2.02.127-1_armhf.deb ...
+<br/>Unpacking lvm2 (2.02.127-1) ...
+<br/>Setting up lvm2 (2.02.127-1) ...
+<br/>[....] Setting up LVM Volume Groups...  lvmetad is not active yet, using direct activation during sysinit
+<br/>done.
+<br/>update-initramfs: deferring update (trigger activated)
+<br/>update-rc.d: warning: default start runlevel arguments (2 3 4 5) do not match lvm2 Default-Start values (S)
+<br/>update-rc.d: warning: default stop runlevel arguments (0 1 6) do not match lvm2 Default-Stop values (none)
+<br/>/etc/init.d/lvm2-lvmetad: 4: .: Can't open /lib/init/init-d-script
+<br/>invoke-rc.d: initscript lvm2-lvmetad, action "start" failed.
+<br/>dpkg: error processing package lvm2 (--configure):
+<br/> subprocess installed post-installation script returned error exit status 2
+<br/>Processing triggers for initramfs-tools (0.120) ...
+<br/>
+<br/>E: Sub-process /usr/bin/dpkg returned an error code (1)
+<br/></code>
+<br/>そして困る
+<br/>
+<br/><code>
+<br/><span class="sh-ps1">&nbsp;$&nbsp;</span>sudo apt-get install sysvinit-utils
+<br/></code>
+<br/>で
+<br/><code>
+<br/><span class="sh-ps1">&nbsp;$&nbsp;</span>sudo apt-get install lvm2
+<br/></code>
+<br/>なぜか既にインストールされている
+<br/>
+<br/>まあいいか、よくないけど
+<br/>
+<br/>というかapt-getって必要なものを全部インストールしてくれると思っていた。
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Wed, 02 Sep 2015 20:34:19 +0900</pubDate>
+</item>
+<item>
+	<title>AzPainterが「! can't load &quot;tb_main.png&quot; in tar」</title>
+	<link>http://fucoten.github.io/articles/1440070639.html</link>
+	<description><![CDATA[
+<br/>久しぶりにapt-getできないものを使いますがいつもと同じでsudoできないユーザーで作業するのでsudo make installしなくてもつかえる、と思ったら使えなかった。
+<br/>
+<br/>いつも通りmakeすると
+<br/><code><span style="color:#3333ff">$&nbsp;</span>make
+<br/><span style="color:#3333ff">$&nbsp;</span>./apainter
+<br/>! can't load "tb_main.png" in tar
+<br/></code>
+<br/>
+<br/>とおこられたから
+<br/>
+<br/><code><span style="color:#3333ff">$&nbsp;</span>nano Makefile
+<br/></code>
+<br/>
+<br/><code>
+<br/>#datadir := $(prefix)/share/azpainter
+<br/>datadir := ./files
+<br/></code>
+<br/>そして上書き
+<br/><code><span style="color:#3333ff">$&nbsp;</span>make clean
+<br/><span style="color:#3333ff">$&nbsp;</span>make
+<br/><span style="color:#3333ff">$&nbsp;</span>./azpainter
+<br/></code>
+<br/>これで動いた。
+<br/>
+<br/>しかしながら、なぜかブラシで書けない。
+<br/>よくわからない。
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Thu, 20 Aug 2015 20:37:19 +0900</pubDate>
+</item>
+<item>
+	<title>gpgの個人的ないろいろ</title>
+	<link>http://fucoten.github.io/articles/1436001199.html</link>
+	<description><![CDATA[
+<br/>本格的に鍵を作る
+<br/><code>
+<br/><span style="color:#3333ff">$&nbsp;</span>gpg --gen-key --expert
+<br/></code>
+<br/>
+<br/>鍵を急いでテキトーに作る
+<br/><code>
+<br/><span style="color:#3333ff">$&nbsp;</span>sudo rm /dev/random
+<br/><span style="color:#3333ff">$&nbsp;</span>sudo mknod /dev/random c 1 9
+<br/><span style="color:#3333ff">$&nbsp;</span>gpg --gen-key --expert
+<br/></code>
+<br/>
+<br/>sha1sumに署名
+<br/><code>
+<br/><span style="color:#3333ff">$&nbsp;</span>find . -type f -print0 |xargs -0 sha1sum |gpg --clearsign -u00000000 -o file
+<br/></code>
+<br/>
+<br/>それをverify
+<br/><code>
+<br/><span style="color:#3333ff">$&nbsp;</span>gpg <file |sha1sum -c
+<br/></code>
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Sat, 04 Jul 2015 18:13:19 +0900</pubDate>
+</item>
+<item>
+	<title>VirtualBoxでLinuxMintが起動しなない問題</title>
+	<link>http://fucoten.github.io/articles/1429270301.html</link>
+	<description><![CDATA[
+<br/>もうなんとかなりましたけどPAE/NXが必要っぽい？
+<br/>
+<br/>Start Linux Mint を選ぶと止まる
+<br/>そしてメモリを増やしても止まる
+<br/>ビデオメモリー(M)を増やしても止まる
+<br/>システムのプロセッサーのPAE/NXを有効化(E)したらなぜか普通に動いた
+<br/>
+<br/>なぜ？
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Fri, 17 Apr 2015 20:31:41 +0900</pubDate>
+</item>
+<item>
+	<title>iptablesで遊んでみた</title>
+	<link>http://fucoten.github.io/articles/1428884629.html</link>
+	<description><![CDATA[環境は再利用する直前のCentOS
+<br/>
+<br/>まず、ポートを変えてみる
+<br/><code>-A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 443</code>
+<br/>80に来たHTTPを443で頑張る
+<br/>
+<br/>もちろんBad Request
+<br/>でも「localhost.localdomain Port 443」と書かれている
+<br/>というかふつう「https://192.168.いくつか.いくつか:80/」で見る
+<br/>
+<br/>
+<br/>あとは、「びっくりマーク」は
+<br/><code>-A INPUT -i ! eth3 -j DROP</code>
+<br/>でも...
+<br/><code>-A INPUT ! -i eth3 -j DROP</code>
+<br/>のほうがお気に召していただけるようで
+<br/>
+<br/>結論から言うと、もうOSをインストールして遷都したいと思います。
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Mon, 13 Apr 2015 09:23:49 +0900</pubDate>
+</item>
+<item>
+	<title>CentOSでsambaで困ったことを思い出した</title>
+	<link>http://fucoten.github.io/articles/1427520622.html</link>
+	<description><![CDATA[
+<br/>SambaでSELinuxを使うと面倒だから無効に……
+<br/>
+<br/>的な検索結果ですが実際それよりiptablesを注意した方がいいと思う。
+<br/>というかSELinuxはあれはあれで全く問題ない
+<br/>というかchconとかでなんとかなるというかそもそもsmb.confに書かれている。
+<br/>
+<br/>iptablesの設定でSambaを意識していなかったら確認した方がいい
+<br/>というか初期設定ではSSHとPingと……何かが書かれているだけだった
+<br/>
+<br/>今回は特にSELinuxはまったく悪くない的な話題
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Sat, 28 Mar 2015 14:30:22 +0900</pubDate>
+</item>
+<item>
+	<title>Opensslで暗号化したファイルをopenssl aes256 -d したらbad magic number</title>
+	<link>http://fucoten.github.io/articles/1426695265.html</link>
+	<description><![CDATA[
+<br/><code><span style="color:#3333ff">$&nbsp;</span>dd if=file bs=16 count=3 2>/dev/null &&echo
+<br/>Sun, 31 May 2016 01:12:27 +0900
+<br/>Salted__</code>
+<br/>(XML的な意味で文字化けたら困るので__の後は省略した)
+<br/>
+<br/>
+<br/>なぜかいい感じにRFCな時間が書かれている
+<br/>それと改行でいい感じに32bytes
+<br/>
+<br/><code><span style="color:#3333ff">$&nbsp;</span>dd if=system.d bs=16 count=6 skip=2 2>/dev/null >./file1</code>
+<br/>
+<br/>まあこれでdecryptできれば苦労しないとか思っていたら……
+<br/>
+<br/>できた。
+<br/>
+<br/>
+<br/>ちなみにサーバーの設定とか鍵とかnanorcとかのファイルだったのでできた時の出力をうｐできないのが残念です。
+<br/>
+<br/>というかそもそも暗号化するほどのファイルをうｐしたくないです。
+<br/>ちなみにセキュリティの都合上実際とは違う日付かもです。
+<br/>
+<br/>
+<br/>
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Thu, 19 Mar 2015 01:14:25 +0900</pubDate>
+</item>
+<item>
+	<title>このブログのtagsのページが現在全く機能していない</title>
+	<link>http://fucoten.github.io/articles/1426265918.html</link>
+	<description><![CDATA[右側とか記事のタイトルの下のtagsが機能していないというか
+<br/>リンク先が一応存在しても記事の部分が白紙な状態でした。
+<br/>
+<br/>というわけで仕方がないのでGoogleで検索するようになっています。
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Sat, 14 Mar 2015 02:19:38 +0900</pubDate>
+</item>
+<item>
+	<title>テキトーに買ってきたUSBのハードディスクをVirtualBoxで使えなかった</title>
+	<link>http://fucoten.github.io/articles/1425728324.html</link>
+	<description><![CDATA[まあ結果的に使えるようにしました
+<br/>
+<br/>
+<br/>ぐぐれば出るように
+<br/>USBの設定で追加して下の方の数値を3つほど空欄にして……
+<br/>
+<br/>まあこれでできれば記事にしていないですが。
+<br/>
+<br/>
+<br/>原因は、そっちではなく、USB3.0でした
+<br/>というわけで外付けなUSBの穴？を増やす機械をはさんだらなんとかなりました
+<br/>
+<br/>
+<br/>何というか……もったいない……
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Sat, 07 Mar 2015 20:38:44 +0900</pubDate>
+</item>
+<item>
+	<title>ブログのPingのエラー</title>
+	<link>http://fucoten.github.io/articles/1425384082.html</link>
+	<description><![CDATA[ブログのPingを送信しようとしたら
+<br/><code>XML error: Invalid document end at line 1
+<br/></code>
+<br/>
+<br/>......えっ？
+<br/>
+<br/>FirefoxではXMLの全体を見えます......?
+<br/><code>Content-type: text/xml</code>するとエラーはありません。
+<br/>
+<br/>そして別のエラーも消えた。
+<br/>なぜ......？
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Tue, 03 Mar 2015 21:01:22 +0900</pubDate>
+</item>
+<item>
+	<title>GAEのDatastoreを急いでダウンロードする</title>
+	<link>http://fucoten.github.io/articles/1425382453.html</link>
+	<description><![CDATA[ダウンロードできればいい人のために結論だけ先に書く
+<br/>app.yamlに
+<br/><code>builtins:
+<br/>- remote_api: on
+<br/></code>
+<br/>のこの２行が必要っぽいので書き加えて<code style="display:inline">appcfg.py update 以下略</code>
+<br/>
+<br/><code><span class="sh-ps1">$&nbsp;</span>rm -f ./bulkloader.yaml
+<br/><span class="sh-ps1">$&nbsp;</span>appcfg.py create_bulkloader_config --filename=bulkloader.yaml --url=https://______.______.___.appspot.com/_ah/remote_api/
+<br/><span class="sh-ps1">$&nbsp;</span>sed -i -E 's/^(\ \ connector\:\ ).*(\#.*|$)/\1csv \2/' bulkloader.yaml
+<br/><span class="sh-ps1">$&nbsp;</span>appcfg.py download_data --config_file=bulkloader.yaml --filename=aaaaaa.csv --url=https://______.______.___/_ah/remote_api/ --kind=aaaaaa
+<br/></code>
+<br/>
+<br/>
+<br/>そしていかにも書くのが面倒に思えるファイルを自動で作らせてダウンロードするけど、<code style="display:inline">--kind</code>と<code style="display:inline">--url</code>はそれぞれの状況で判断して書き換える
+<br/>
+<br/>ちなみにこれはLinuxでかつ$PATHの先頭にGAEのフォルダがある環境なのでWindowsの場合は人力でsedとかMinttyとかで頑張ればいいと思います
+<br/>というわけで日本語での検索結果では満足できなかったので書いておきました
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Tue, 03 Mar 2015 20:34:13 +0900</pubDate>
+</item>
+<item>
+	<title>minidlnaをソースからビルドしてlibid3tagが分からなかった</title>
+	<link>http://fucoten.github.io/articles/1425247742.html</link>
+	<description><![CDATA[debian.orgをgoogleで検索しました。
+<br/>libid3tag<span style="font-size:xx-large;">0</span>ですよね？
+<br/>libid3tag　ではなく
+<br/>libid3tag0　ですよね？
+<br/>
+<br/><style>code .sh-ps1{color:#35f;-moz-user-select:none;}</style>
+<br/><code><span class="sh-ps1" >$&nbsp;</span>apt-get install libid3tag0-dev
+<br/><span class="sh-ps1">$&nbsp;</span>make</code>
+<br/>これでビルドできました。
+<br/>
+<br/>今回はライブラリやヘッダは<code style="display:inline;">apt-get install</code>で、実行ファイルだけソースからです。
+<br/>
+<br/>ちなみに
+<br/><del>ライブラリをビルドするのが面倒なので</del>Debianのminidlnaのページに「dep:adduser」などと書いてあったからです。
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Mon, 02 Mar 2015 07:09:02 +0900</pubDate>
+</item>
+<item>
+	<title>MathMLのmathvariant</title>
+	<link>http://fucoten.github.io/articles/1425209762.html</link>
+	<description><![CDATA[というわけでxを一覧っぽく書いた
+<br/>
+<br/><table><thead><tr style="border-style:solid;border-width:1px;background-color:#d0d0d0;"><td>mathvariant</td><td>math</td></tr></thead><tr><td>&nbsp;</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="">x</mi></math></td></tr><tr><td>normal</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">x</mi></math></td></tr><tr><td>bold</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="bold">x</mi></math></td></tr><tr><td>italic</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="italic">x</mi></math></td></tr><tr><td>bold-italic</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="bold-italic">x</mi></math></td></tr><tr><td>fraktur</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="fraktur">x</mi></math></td></tr><tr><td>bold-fraktur</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="bold-fraktur">x</mi></math></td></tr><tr><td>script</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="script">x</mi></math></td></tr><tr><td>bold-script</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="bold-script">x</mi></math></td></tr><tr><td>sans-serif</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="sans-serif">x</mi></math></td></tr><tr><td>bold-sans-serif</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="bold-sans-serif">x</mi></math></td></tr><tr><td>sans-serif-italic</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="sans-serif-italic">x</mi></math></td></tr><tr><td>sans-serif-bold-italic</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="sans-serif-bold-italic">x</mi></math></td></tr><tr><td>monospace</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="monospace">x</mi></math></td></tr><tr><td>double-struck</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="double-struck">x</mi></math></td></tr><tr><td>initial</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="initial">x</mi></math></td></tr><tr><td>tailed</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="tailed">x</mi></math></td></tr><tr><td>looped</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="looped">x</mi></math></td></tr><tr><td>stretched</td><td><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="stretched">x</mi></math></td></tr></table>
+<br/>
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Sun, 01 Mar 2015 20:36:02 +0900</pubDate>
+</item>
+<item>
+	<title>MathMLのmstyleのdisplaystyleについて</title>
+	<link>http://fucoten.github.io/articles/1425202600.html</link>
+	<description><![CDATA[displaystyle="true"の場合
+<br/><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="true"><mover><mrow><mi>x</mi></mrow><mrow><mo>&rarr;</mo></mrow></mover><mo>-</mo><mover><mrow><mi>n</mi></mrow><mrow><mo>&rarr;</mo></mrow></mover><mfenced><mrow><mfrac><mrow><mover><mrow><mi>n</mi></mrow><mrow><mo>&rarr;</mo></mrow></mover><mo>&sdot;</mo><mover><mrow><mi>x</mi></mrow><mrow><mo>&rarr;</mo></mrow></mover></mrow><mrow><mover><mrow><mi>n</mi></mrow><mrow><mo>&rarr;</mo></mrow></mover><mo>&sdot;</mo><mover><mrow><mi>n</mi></mrow><mrow><mo>&rarr;</mo></mrow></mover></mrow></mfrac></mrow></mfenced></mstyle></math>
+<br/>
+<br/>
+<br/>displaystyle="false"の場合
+<br/><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="false"><mover><mrow><mi>x</mi></mrow><mrow><mo>&rarr;</mo></mrow></mover><mo>-</mo><mover><mrow><mi>n</mi></mrow><mrow><mo>&rarr;</mo></mrow></mover><mfenced><mrow><mfrac><mrow><mover><mrow><mi>n</mi></mrow><mrow><mo>&rarr;</mo></mrow></mover><mo>&sdot;</mo><mover><mrow><mi>x</mi></mrow><mrow><mo>&rarr;</mo></mrow></mover></mrow><mrow><mover><mrow><mi>n</mi></mrow><mrow><mo>&rarr;</mo></mrow></mover><mo>&sdot;</mo><mover><mrow><mi>n</mi></mrow><mrow><mo>&rarr;</mo></mrow></mover></mrow></mfrac></mrow></mfenced></mstyle></math>
+<br/>
+<br/>displaystyle="true"の方が見やすい？というか……同じ大きさ？
+<br/>
+<br/>ちなみに式は、ごらんのとおりで原点を通る<math xmlns="http://www.w3.org/1998/Math/MathML"><mover><mrow><mi>n</mi></mrow><mrow><mo>&rarr;</mo></mrow></mover></math>に垂直な面とか線とかに<math xmlns="http://www.w3.org/1998/Math/MathML"><mover><mrow><mi>x</mi></mrow><mrow><mo>&rarr;</mo></mrow></mover></math>から垂線を書いたときにその面とか線とかと交わる座標で深い意味はないです
+<br/>
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Sun, 01 Mar 2015 18:47:22 +0900</pubDate>
+</item>
+<item>
+	<title>Linuxで手っ取り早くUSBの起動で使うのを作った</title>
+	<link>http://fucoten.github.io/articles/1425056166.html</link>
+	<description><![CDATA[というわけでGPartedのためだけのISOを使いたいけど空のCDを探すのが面倒なのでUSBを再利用します。
+<br/>われながら経済的にも環境的にもやさしい。
+<br/>というわけで
+<br/><code><span style="color:#6868ff">$&nbsp;</span>dd if=./gparted.iso of=/dev/sdd</code>
+<br/>そしてUSBから起動
+<br/>
+<br/>
+<br/>まあ、こういう作業はミスをすると深刻なことになるので個人的にはGUIの方がありがたいです。
+<br/>
+<br/>
+<br/>ブラウザがあるのはfile:///を見るためかと思えばThunar的な何かはあった、よくわからない。
+<br/>しかもgpgが使えた、でもブラウザがあるのにopensslは無かった、もっと意味がわからない。
+<br/>
+<br/>
+<br/>ちなみにあれはFluxbox？でしょうか。少し気に入ったのでいつか使ってみようと思います。
+<br/>
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Sat, 28 Feb 2015 01:56:06 +0900</pubDate>
+</item>
+<item>
+	<title>はてなスターのHTMLというかScriptを埋め込んで出ない問題</title>
+	<link>http://fucoten.github.io/articles/1424777981.html</link>
+	<description><![CDATA[結論というかお知らせとして
+<br/>
+<br/>読み込んでから12秒後にはてなスターが出るようにしました
+<br/>
+<br/>
+<br/>このブログ？的な何かには最初からはてなスターのJavaScriptがあっても出なかったから
+<br/>
+<br/><strong>なんとかしました</strong>
+<br/>
+<br/>というのはFirebug的には<code style="display:inline;">Hatena.Star.SiteConfig</code>が無いというか消えている
+<br/>
+<br/>もしかして、
+<br/>はてなスター上書きしちゃった？
+<br/>
+<br/>
+<br/>
+<br/>というわけで仕方がないので12秒後に読み込むことにしました
+<br/>
+<br/><code>setTimeout((function(){
+<br/>&ensp;Hatena.Star.EntryLoader.loaded = false;
+<br/>&ensp;Hatena.Star.EntryLoader.entries = undefined;
+<br/>&ensp;Hatena.Star.SiteConfig = {
+<br/>&ensp;&ensp;entryNodes: {
+<br/>&ensp;&ensp;&ensp;'.hatenastar-entrynode': {
+<br/>&ensp;&ensp;&ensp;&ensp;uri: '.hatenastar-url',
+<br/>&ensp;&ensp;&ensp;&ensp;title: '.hatenastar-title',
+<br/>&ensp;&ensp;&ensp;&ensp;container: '.hatenastar-container'
+<br/>&ensp;&ensp;&ensp;}
+<br/>&ensp;&ensp;}
+<br/>&ensp;};
+<br/>&ensp;new Hatena.Star.EntryLoader();
+<br/>}),12000);</code>
+<br/>
+<br/>参考にしたのは
+<br/><a class="link-external" href="http://s.hatena.ne.jp/js/Hatena/Star/SiteConfigGenerator.js">http://s.hatena.ne.jp/js/Hatena/Star/SiteConfigGenerator.js</a>のloadStar(124行目から129行目)
+<br/>
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Tue, 24 Feb 2015 20:39:41 +0900</pubDate>
+</item>
+<item>
+	<title>MediaTombが</title>
+	<link>http://fucoten.github.io/articles/1424702336.html</link>
+	<description><![CDATA[MediaTombによると
+<br/><code>20**-**-** **:**:**    INFO: Configration check scceeded.
+<br/>20**-**-** **:**:** WARNING: Sqlite3 database seems to be corrpt or doesn't exist yet.</code>
+<br/>
+<br/>データベースならあるけど？空のファイルで……
+<br/>
+<br/><code><span style="color:#3333ff">$&nbsp;</span>sqlite3 mediatomb.db &lt;./mediatomb-0.12.1/config/sqlite3.sql</code>
+<br/>ということでSQite3
+<br/>
+<br/>
+<br/><code>20**-**-** **:**:**    INFO: Configration check scceeded.
+<br/>20**-**-** **:**:**    INFO: Initialized port: *****</code>
+<br/>
+<br/>
+<br/>うごいた……
+<br/>というかそもそもデータベースとか実行ファイルが自力でなんとかしてほしい
+<br/>
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Mon, 23 Feb 2015 23:38:56 +0900</pubDate>
+</item>
+<item>
+	<title>githbにいきなりSSHでgit push -u origin master できなくなった</title>
+	<link>http://fucoten.github.io/articles/1424507481.html</link>
+	<description><![CDATA[<code>Permission denied (publickey).
+<br/>fatal: Could not read from remote repository.
+<br/>
+<br/>Please make sure you have the correct access rights
+<br/>and the repository exists.</code>
+<br/>
+<br/>ということがありました
+<br/>
+<br/>リポジトリが無い
+<br/>名前が違う
+<br/>
+<br/>という原因が考えられるから<code style="display:inline;">git remote rm</code>するといい的な記述は見かけたけどもちろん効果はない
+<br/>
+<br/>
+<br/>原因は
+<br/>
+<br/>
+<br/>「なぜかSSHの鍵がGithubから消えていた」
+<br/>
+<br/>でした。
+<br/>
+<br/>なんで！？
+<br/>
+<br/>操作ミスとか？まあ<code style="display:inline;">git push -u origin master</code>できたからいいか
+<br/>
+<br/>
+<br/>今もしかして？と思って確認した結果もしかしたけど
+<br/>「Personal settings」の「SSH Keys」と、RepositoryのSettingsの「Deploy keys」があって
+<br/>どれもSSHの公開鍵を入力してpshできたからもしかするとそれが原因かも
+<br/>
+<br/>というかそれ以外に原因に心当たりがない
+<br/>
+<br/>以後気を付けます。
+<br/>
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Sat, 21 Feb 2015 17:31:21 +0900</pubDate>
+</item>
+<item>
+	<title>Initial commit</title>
+	<link>http://fucoten.github.io/articles/1424448112.html</link>
+	<description><![CDATA[とりあえずブログを作ってみました。
+<br/>というか、作ってしまいました。
+<br/>もう「てへっ」とか言うのを忘れるレベルで「てへっ☆」な状態です。
+<br/>
+<br/>まあタグが「お知らせ」ですが「始めました」では将来的に使わない気がするから……
+<br/>「お知らせ」なら1か月ほど更新できなくなりました的なことに流用できそうという発想？
+<br/>
+<br/>というわけで
+<br/>どうぞよろしく
+<br/>
+<br/>
+<br/>ところで最初の記事というものはこういう形式でよかったのかが若干心配ですがよろしくお願いします。
+<br/>
+]]></description>
+	<dc:creator></dc:creator>
+	<pubDate>Sat, 21 Feb 2015 01:01:52 +0900</pubDate>
+</item>
+
+</channel>
+</rss>
